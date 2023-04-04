@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Ticket controller to handle HTTP requests
+ */
 @RestController
 @RequestMapping("/api/tickets")
 @CrossOrigin(origins = {"http://localhost:4200", "http://localhost:3000"}, allowCredentials = "true")
@@ -27,6 +30,11 @@ public class TicketController {
         this.ticketService = ticketService;
     }
 
+    /**
+     * Searches for a list of the user's pending tickets
+     * @param session - Current HTTP session
+     * @return - Response with List of Ticket objects belonging to the user
+     */
     @GetMapping
     public ResponseEntity<List<Ticket>> findPendingTicketsByUserId(HttpSession session) {
         UserDto userDto = (UserDto) session.getAttribute("user");
@@ -39,6 +47,11 @@ public class TicketController {
         return ResponseEntity.badRequest().build();
     }
 
+    /**
+     * Searches for a list of all the user's tickets
+     * @param session - Current HTTP session
+     * @return - Response with List of Ticket objects belonging to the user
+     */
     @GetMapping(value = "/all")
     public ResponseEntity<List<Ticket>> findTicketsByUserId(HttpSession session) {
         UserDto userDto = (UserDto) session.getAttribute("user");
@@ -50,6 +63,12 @@ public class TicketController {
         return ResponseEntity.badRequest().build();
     }
 
+    /**
+     * Searches for a list of user's tickets based on its status
+     * @param session - Current HTTP session
+     * @param status - Ticket's status
+     * @return - Response with List of Ticket objects based on status and belonging to the user
+     */
     @GetMapping(value = "/{status}")
     public ResponseEntity<List<Ticket>> findTicketsByUserIdAndStatus(HttpSession session, @PathVariable String status) {
         UserDto userDto = (UserDto) session.getAttribute("user");
@@ -62,6 +81,12 @@ public class TicketController {
         return ResponseEntity.badRequest().build();
     }
 
+    /**
+     * Create a new ticket based on information in request body
+     * @param session - Current HTTP session
+     * @param ticket - Ticket object
+     * @return - Response with Ticket that was created in the database
+     */
     @PostMapping(value = "/submit")
     public ResponseEntity<Ticket> createTicket(HttpSession session, @RequestBody Ticket ticket) {
         UserDto userDto = (UserDto) session.getAttribute("user");

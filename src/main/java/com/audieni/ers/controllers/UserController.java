@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+/**
+ * User controller to handle HTTP requests
+ */
 @RestController
 @RequestMapping("/api/users")
 @CrossOrigin(origins = {"http://localhost:4200", "http://localhost:3000"}, allowCredentials = "true")
@@ -25,6 +28,12 @@ public class UserController {
         this.userService = userService;
     }
 
+    /**
+     * User login if credentials are correct
+     * @param loginRequestDto - DTO containing user's login credentials
+     * @param session - Current HTTP session
+     * @return - ResponseEntity with String message
+     */
     @PutMapping(value = "/login")
     public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequestDto, HttpSession session) {
         try {
@@ -40,12 +49,22 @@ public class UserController {
         return ResponseEntity.badRequest().body("You're already logged in.");
     }
 
+    /**
+     * User logout regardless of logged in status
+     * @param session - Current HTTP session
+     * @return - ResponseEntity with String message
+     */
     @PutMapping(value = "/logout")
     public ResponseEntity<String> logout(HttpSession session) {
         session.removeAttribute("user");
         return ResponseEntity.ok().body("You're logged out.");
     }
 
+    /**
+     * User registration if credentials are correct
+     * @param registerRequestDto - DTO containing user's registration credentials
+     * @return - ResponseEntity with String message
+     */
     @PostMapping(value = "/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequestDto registerRequestDto) {
         try {
